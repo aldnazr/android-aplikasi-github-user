@@ -1,0 +1,21 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.AplikasiGitHubUser" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#00668b</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#dce3e9</item>
+    </style>
+
+    <style name="toolbarStyle">
+        <item name="android:background">#dce3e9</item>
+    </style>
+
+    <style name="searchBgTint">
+        <item name="android:backgroundTint">#f0f0f3</item>
+    </style>
+
+    <style name="searchViewBackground">
+        <item name="backgroundTint">#dce3e9</item>
+    </style>
+</resources>

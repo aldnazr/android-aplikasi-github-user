@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Aplikasi GitHub User</string>
+    <string name="searchBarHint">Pencarian</string>
+    <string name="followers">%d Followers</string>
+    <string name="following">%d Following</string>
+    <string name="searchViewHint">Cari</string>
+    <string name="followers_empty">Tidak ada pengikut</string>
+    <string name="following_empty">Tidak mengikuti siapapun</string>
+    <string name="setting_dark_theme">Tema gelap</string>
+</resources>
