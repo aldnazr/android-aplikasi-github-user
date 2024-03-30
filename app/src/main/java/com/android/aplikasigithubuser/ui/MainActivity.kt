@@ -44,10 +44,7 @@ class MainActivity : AppCompatActivity() {
                 override fun afterTextChanged(p0: Editable?) {
                     val searchText = p0.toString()
                     if (searchText.isNotEmpty()) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            delay(1500)
                             mainViewModel.setListUsers(searchText)
-                        }
                     } else {
                         mainViewModel.setListUsers(null)
                     }
