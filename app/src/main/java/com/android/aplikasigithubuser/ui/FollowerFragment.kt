@@ -13,6 +13,7 @@ import com.android.aplikasigithubuser.adapter.RecyclerAdapterFollow
 import com.android.aplikasigithubuser.databinding.FragmentFollowerBinding
 import com.android.aplikasigithubuser.response.ResponseFollowItem
 import com.android.aplikasigithubuser.viewmodel.MainViewModel
+import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class FollowerFragment : Fragment() {
 
@@ -32,7 +33,7 @@ class FollowerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val layoutManager = LinearLayoutManager(requireActivity())
-        val decoration = DividerItemDecoration(requireActivity(), layoutManager.orientation)
+        val decoration = MaterialDividerItemDecoration(requireActivity(), layoutManager.orientation)
 
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addItemDecoration(decoration)

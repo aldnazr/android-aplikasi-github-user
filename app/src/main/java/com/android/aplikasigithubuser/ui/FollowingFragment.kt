@@ -14,6 +14,7 @@ import com.android.aplikasigithubuser.adapter.RecyclerAdapterFollow
 import com.android.aplikasigithubuser.databinding.FragmentFollowingBinding
 import com.android.aplikasigithubuser.response.ResponseFollowItem
 import com.android.aplikasigithubuser.viewmodel.MainViewModel
+import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class FollowingFragment : Fragment() {
 
@@ -31,7 +32,7 @@ class FollowingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val layoutManager = LinearLayoutManager(requireActivity())
-        val decoration = DividerItemDecoration(requireActivity(), layoutManager.orientation)
+        val decoration = MaterialDividerItemDecoration(requireActivity(), layoutManager.orientation)
 
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.addItemDecoration(decoration)

@@ -10,7 +10,6 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.android.aplikasigithubuser.R
 import com.android.aplikasigithubuser.adapter.RecyclerAdapterMain
@@ -18,16 +17,14 @@ import com.android.aplikasigithubuser.databinding.ActivityMainBinding
 import com.android.aplikasigithubuser.response.ItemsItem
 import com.android.aplikasigithubuser.viewmodel.MainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.google.android.material.search.SearchView.TransitionState
+
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val mainViewModel by viewModels<MainViewModel>()
-    private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +34,20 @@ class MainActivity : AppCompatActivity() {
 
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
-            val decoration = DividerItemDecoration(this@MainActivity, RecyclerView.VERTICAL)
+            val decoration = MaterialDividerItemDecoration(this@MainActivity, RecyclerView.VERTICAL)
             recyclerView.addItemDecoration(decoration)
+
+            searchView.addTransitionListener { searchView, previousState, newState ->
+                if (newState == TransitionState.HIDING) {
+                    mainViewModel.setListUsers(null)
+                }
+            }
 
             searchView.editText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {
                     val searchText = p0.toString()
                     if (searchText.isNotEmpty()) {
-                            mainViewModel.setListUsers(searchText)
+                        mainViewModel.setListUsers(searchText)
                     } else {
                         mainViewModel.setListUsers(null)
                     }
@@ -106,17 +109,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayProgressBar(isLoading: Boolean) {
-        progressDialog = if (isLoading && progressDialog == null) {
-            ProgressDialog(this).apply {
-                setTitle("Memuat...")
-                setMessage("Harap Tunggu...")
-                setCancelable(false)
-                show()
-            }
-        } else {
-            progressDialog?.dismiss()
-            null
-        }
+        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun displayAlertDialog(isFailedLoad: Boolean, context: Context) {
