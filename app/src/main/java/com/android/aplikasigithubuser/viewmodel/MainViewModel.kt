@@ -9,7 +9,6 @@ import com.android.aplikasigithubuser.response.ResponseDetailUser
 import com.android.aplikasigithubuser.response.ResponseFollowItem
 import com.android.aplikasigithubuser.response.ResponseGithubUsers
 import com.android.aplikasigithubuser.retrofit.ApiConfig
-import org.jetbrains.annotations.Nullable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +35,14 @@ class MainViewModel : ViewModel() {
     private val _listFollowing = MutableLiveData<ArrayList<ResponseFollowItem>>()
     val getListFollowing: LiveData<ArrayList<ResponseFollowItem>> = _listFollowing
 
-    fun setListUsers(@Nullable username: String?) {
+    private val _isScrolled = MutableLiveData<Boolean>()
+    val isScrolled: LiveData<Boolean> = _isScrolled
+
+    fun setScrolled(value: Boolean) {
+        _isScrolled.value = value
+    }
+
+    fun setListUsers(username: String?) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getResponseGithubUsers(username ?: "username")
         client.enqueue(object : Callback<ResponseGithubUsers> {

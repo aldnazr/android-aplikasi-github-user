@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.aplikasigithubuser.R
@@ -16,7 +16,7 @@ import com.android.aplikasigithubuser.viewmodel.MainViewModel
 
 class FollowerFragment : Fragment() {
 
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var binding: FragmentFollowerBinding
 
     override fun onCreateView(
@@ -38,14 +38,16 @@ class FollowerFragment : Fragment() {
         binding.recyclerView.addItemDecoration(decoration)
         val data = arguments?.getString("username")
 
+        binding.recyclerView.setOnScrollChangeListener { _, _, oldY, _, newY ->
+            mainViewModel.setScrolled(oldY <= newY)
+        }
+
         with(mainViewModel) {
             setListFollowers(data!!)
             getListFollowers.observe(viewLifecycleOwner) {
                 setRecyclerView(it)
-
                 emptyState(it.isEmpty())
             }
-
             isLoading.observe(viewLifecycleOwner) {
                 displayProgressBar(it)
             }

@@ -32,7 +32,7 @@ class RecyclerAdapterFavorite() :
         RecyclerView.ViewHolder(binding.root) {
 
         private val favoriteDao by lazy {
-            FavoriteDatabase.database(itemView.context).favoriteDao()
+            FavoriteDatabase.getInstance(itemView.context).favoriteDao()
         }
 
         @SuppressLint("NotifyDataSetChanged")

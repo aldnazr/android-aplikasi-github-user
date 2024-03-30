@@ -17,17 +17,18 @@ abstract class FavoriteDatabase : RoomDatabase() {
         private var INSTANCE: FavoriteDatabase? = null
 
         @OptIn(InternalCoroutinesApi::class)
-        @JvmStatic
-        fun database(context: Context): FavoriteDatabase {
+        fun getInstance(context: Context): FavoriteDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    FavoriteDatabase::class.java,
-                    "favorite_database"
-                ).build()
-                INSTANCE = instance
-                instance
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
+        }
+
+        private fun buildDatabase(context: Context): FavoriteDatabase {
+            return Room.databaseBuilder(
+                context.applicationContext,
+                FavoriteDatabase::class.java,
+                "favorite_database"
+            ).build()
         }
     }
 }

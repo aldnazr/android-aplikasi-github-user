@@ -16,7 +16,7 @@ class FavoriteViewModel(application: Application) : AndroidViewModel(application
     val readAllData: LiveData<List<Favorite>>
 
     init {
-        val favoriteDao = FavoriteDatabase.database(application).favoriteDao()
+        val favoriteDao = FavoriteDatabase.getInstance(application).favoriteDao()
         repository = FavoriteRepository(favoriteDao)
         readAllData = repository.readAllData()
     }

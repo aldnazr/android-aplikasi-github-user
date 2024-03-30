@@ -4,104 +4,108 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.aplikasigithubuser.R
 import com.android.aplikasigithubuser.adapter.RecyclerAdapterMain
 import com.android.aplikasigithubuser.databinding.ActivityMainBinding
 import com.android.aplikasigithubuser.response.ItemsItem
 import com.android.aplikasigithubuser.viewmodel.MainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val mainViewModel by viewModels<MainViewModel>()
     private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        onBackPress()
 
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
-            searchView.editText.setOnEditorActionListener { textview, _, _ ->
-                val searchText = textview.text.toString()
-                if (searchText.isNotEmpty()) {
-                    mainViewModel.setListUsers(searchText)
-                    searchBar.setText(searchText)
-                } else {
-                    mainViewModel.setListUsers(null)
-                    searchBar.clearText()
+            val decoration = DividerItemDecoration(this@MainActivity, RecyclerView.VERTICAL)
+            recyclerView.addItemDecoration(decoration)
+
+            searchView.editText.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(p0: Editable?) {
+                    val searchText = p0.toString()
+                    if (searchText.isNotEmpty()) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            delay(1500)
+                            mainViewModel.setListUsers(searchText)
+                        }
+                    } else {
+                        mainViewModel.setListUsers(null)
+                    }
                 }
-                searchView.hide()
-                true
-            }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+            })
 
             searchBar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.favorit -> startActivity(
                         Intent(
-                            this@MainActivity,
-                            FavoriteActivity::class.java
+                            this@MainActivity, FavoriteActivity::class.java
                         )
                     )
 
                     R.id.settings -> startActivity(
                         Intent(
-                            this@MainActivity,
-                            SettingsActivity::class.java
+                            this@MainActivity, SettingsActivity::class.java
                         )
                     )
                 }
                 true
             }
-
-            val layoutManager = LinearLayoutManager(this@MainActivity)
-            val decoration = DividerItemDecoration(this@MainActivity, layoutManager.orientation)
-            recyclerView.layoutManager = layoutManager
-            recyclerView.addItemDecoration(decoration)
-
-            onBackPressedDispatcher.addCallback {
-                if (searchView.isShowing) {
-                    searchView.hide()
-                    return@addCallback
-                }
-                if (searchBar.text.isNotEmpty()) {
-                    searchBar.clearText()
-                    mainViewModel.setListUsers(null)
-                    return@addCallback
-                }
-                finish()
-            }
         }
+    }
 
+    private fun onBackPress() {
+        onBackPressedDispatcher.addCallback {
+            if (binding.searchView.isShowing) {
+                binding.searchView.hide()
+                mainViewModel.setListUsers(null)
+                return@addCallback
+            }
+            finish()
+        }
         with(mainViewModel) {
             setListUsers(null)
             getListUsers.observe(this@MainActivity) {
                 setRecyclerView(it)
                 emptyState(it.isEmpty())
             }
-
             isLoading.observe(this@MainActivity) {
                 displayProgressBar(it)
             }
-
             isFailedLoad.observe(this@MainActivity) {
                 displayAlertDialog(it, this@MainActivity)
             }
         }
-
-
     }
 
-    private fun setRecyclerView(usersList: ArrayList<ItemsItem>) {
-        binding.recyclerView.adapter = RecyclerAdapterMain(usersList)
+    private fun setRecyclerView(listUser: ArrayList<ItemsItem>) {
+        binding.recyclerView.adapter = RecyclerAdapterMain(listUser)
+        binding.recyclerViewSearch.adapter = RecyclerAdapterMain(listUser)
     }
 
     private fun displayProgressBar(isLoading: Boolean) {
@@ -120,10 +124,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayAlertDialog(isFailedLoad: Boolean, context: Context) {
         if (isFailedLoad) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle("No Connection")
-                .setMessage("Failed to load data")
-                .setPositiveButton("OK") { dialog, _ ->
+            MaterialAlertDialogBuilder(context).setTitle("No Connection")
+                .setMessage("Failed to load data").setPositiveButton("OK") { dialog, _ ->
                     dialog.dismiss()
                 }.create().show()
         }

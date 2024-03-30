@@ -52,13 +52,14 @@ class DetailUserActivity : AppCompatActivity() {
                     follower.text = getString(R.string.followers, it.followers)
                     following.text = getString(R.string.following, it.following)
                 }
-
                 isLoading.observe(this@DetailUserActivity) {
                     showProgress(it)
                 }
-
                 isFailedLoad.observe(this@DetailUserActivity) {
                     displayAlertDialog(it, this@DetailUserActivity)
+                }
+                isScrolled.observe(this@DetailUserActivity) {
+                    if (it) fab.show() else fab.hide()
                 }
             }
 
@@ -115,10 +116,8 @@ class DetailUserActivity : AppCompatActivity() {
 
     private fun displayAlertDialog(isFailedLoad: Boolean, context: Context) {
         if (isFailedLoad) {
-            MaterialAlertDialogBuilder(context)
-                .setTitle("No Connection")
-                .setMessage("Failed to load data")
-                .setPositiveButton("OK") { _, _ ->
+            MaterialAlertDialogBuilder(context).setTitle("No Connection")
+                .setMessage("Failed to load data").setPositiveButton("OK") { _, _ ->
                     finish()
                 }.create().show()
         }
