@@ -1,11 +1,11 @@
 package com.android.aplikasigithubuser.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.aplikasigithubuser.R
 import com.android.aplikasigithubuser.adapter.PagerAdapter
 import com.android.aplikasigithubuser.database.Favorite
@@ -101,13 +101,14 @@ class DetailUserActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     private fun setFabIcon(isChecked: Boolean) {
-        if (isChecked) {
-            binding.fab.setImageDrawable(getDrawable(R.drawable.favorite_fill))
-        } else {
-            binding.fab.setImageDrawable(getDrawable(R.drawable.favorite_outlined))
-        }
+        binding.fab.setImageDrawable(
+            AppCompatResources.getDrawable(
+                this,
+                if (isChecked) R.drawable.favorite_fill
+                else R.drawable.favorite_outlined
+            )
+        )
     }
 
     private fun showProgress(isLoading: Boolean) {

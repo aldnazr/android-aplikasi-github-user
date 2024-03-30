@@ -2,8 +2,10 @@ package com.android.aplikasigithubuser.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import com.android.aplikasigithubuser.viewmodel.SettingsViewModel
 class SplashActivity : AppCompatActivity() {
 
     private val settingsViewModel by viewModels<SettingsViewModel>()
+    private val LAUNCH_TIME = 2000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +47,19 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 2000)
+        }, LAUNCH_TIME)
+
+        hideSystemBar()
+    }
+
+    private fun hideSystemBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsetsCompat.Type.systemBars())
+        } else {
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_FULLSCREEN or
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        }
     }
 }
