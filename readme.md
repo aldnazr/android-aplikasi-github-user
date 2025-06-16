@@ -1,6 +1,6 @@
 ## Aplikasi Github User
 
-Aplikasi yang dapat melihat pengguna dan detail following dan follower pengguna yang dapat di favortikan juga
+Aplikasi ini memungkinkan pengguna untuk mencari dan melihat profil pengguna GitHub, termasuk detail daftar akun yang mereka ikuti (following) dan akun yang mengikuti mereka (followers). Selain itu, pengguna juga dapat menandai atau menyimpan profil tertentu sebagai favorit untuk diakses kembali dengan lebih mudah.
 
 ## Screenshot
 
