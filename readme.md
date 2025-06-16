@@ -4,8 +4,8 @@ Aplikasi yang dapat melihat pengguna dan detail following dan follower pengguna 
 
 ## Screenshot
 
-![](https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/1.jpg)
-![](https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/2.jpg)
-![](https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/3.jpg)
-![](https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/4.jpg)
-![](https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/5.jpg)
+<img src="https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/1.jpg" width="300"/>
+<img src="https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/2.jpg" width="300"/>
+<img src="https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/3.jpg" width="300"/>
+<img src="https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/4.jpg" width="300"/>
+<img src="https://raw.githubusercontent.com/aldnazr/android-aplikasi-github-user/refs/heads/main/preview/5.jpg" width="300"/>
